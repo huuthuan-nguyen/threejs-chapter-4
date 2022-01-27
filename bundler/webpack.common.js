@@ -1,28 +1,31 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
-const path = require('path')
+import CopyPlugin from 'copy-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = {
-    entry: path.resolve(__dirname, '../src/script.js'),
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export const commonConfiguration = {
+    entry: __dirname + '/../src/script.js',
     output:
     {
         filename: 'bundle.[contenthash].js',
-        path: path.resolve(__dirname, '../dist')
+        path: __dirname + '/dist'
     },
     devtool: 'source-map',
     plugins:
     [
-        new CopyWebpackPlugin({
+        new CopyPlugin({
             patterns: [
-                { from: path.resolve(__dirname, '../static') }
+                { from: __dirname + '/../static' }
             ]
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../src/index.html'),
+            template: __dirname + '/../src/index.html',
             minify: true
         }),
-        new MiniCSSExtractPlugin()
+        new MiniCssExtractPlugin()
     ],
     module:
     {
@@ -49,7 +52,7 @@ module.exports = {
                 test: /\.css$/,
                 use:
                 [
-                    MiniCSSExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     'css-loader'
                 ]
             },
@@ -85,4 +88,4 @@ module.exports = {
             }
         ]
     }
-}
+};
